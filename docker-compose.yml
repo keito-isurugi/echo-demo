@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    build: .
+    volumes:
+      - ./:/go/src/app
+    ports:
+      - "8088:8088"
+    networks:
+      - echo-demo-network
+  db:
+    container_name: echo-demo-db
+    image: postgres:14.5
+    tty: true
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+    volumes:
+      # - ./persist/postgres:/var/lib/postgresql/data
+      - ./DDL:/docker-entrypoint-initdb.d
+    networks:
+      - echo-demo-network
+networks:
+  echo-demo-network:
+    external: false
