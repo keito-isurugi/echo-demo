@@ -4,14 +4,12 @@ import (
 	"fmt"
 	"net/http"
 	"time"
-	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
 	"github.com/labstack/echo"
-	// "github.com/pkg/errors"
-	"github.com/joho/godotenv"
+
+	"echo-demo/internal/db"
 )
 
 type Todo struct {
@@ -22,50 +20,17 @@ type Todo struct {
 	UpdatedAt time.Time
 }
 
-type DB struct {
-	PostgresHost     string `required:"true" split_words:"true"`
-	PostgresPort     string `required:"true" split_words:"true"`
-	PostgresDatabase string `required:"true" split_words:"true"`
-	PostgresUser     string `required:"true" split_words:"true"`
-	PostgresPassword string `required:"true" split_words:"true"`
-}
-func env() {
-	err := godotenv.Load(".env")
-	if err != nil {
-		fmt.Printf("envを読み込めませんでした： %v", err)
-	}
-
-	message := os.Getenv("SAMPLE_MESSAGE")
-	fmt.Println(message)
-}
-// func NewValue() (*Values, error) {
-// 	var v Values
-// 	err := envconfig.Process("", &v)
-
-// 	// test環境の場合はtest用のDB情報を設定する
-// 	if v.Env == "test" {
-// 		v.DB.PostgresHost = v.TestDB.TestPostgresHost
-// 		v.DB.PostgresPort = v.TestDB.TestPostgresPort
-// 		v.DB.PostgresDatabase = v.TestDB.TestPostgresDatabase
-// 		v.DB.PostgresUser = v.TestDB.TestPostgresUser
-// 		v.DB.PostgresPassword = v.TestDB.TestPostgresPassword
-// 	}
-
-// 	if err != nil {
-// 		s := fmt.Sprintf("need to set all env values %+v", v)
-// 		return nil, errors.Wrap(err, s)
-// 	}
-// 	return &v, nil
-// }
-
-
 func main() {
 	e := echo.New()
 
+	db, _ := db.NewConnect()
+
 	ag := e.Group("/architecture")
-	mg := ag.Group("/mono")
-	mg.GET("/todo", func(c echo.Context) error {
-		return c.String(http.StatusOK, "todo詳細取得")
+	ag.GET("/beta/todos", func(c echo.Context) error {
+		var todos []Todo
+		db.Find(&todos)
+		fmt.Println(todos)
+		return c.String(http.StatusOK, "todo一覧取得")
 	})
 
 
