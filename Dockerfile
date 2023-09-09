@@ -4,15 +4,14 @@ FROM golang:1.18
 # ログに出力する時間をJSTにするため、タイムゾーンを設定
 ENV TZ /usr/share/zoneinfo/Asia/Tokyo
 
-ENV ROOT=/go/src/app
-WORKDIR ${ROOT}
+WORKDIR /app
 
-# ModuleモードをON
-ENV GO111MODULE=on
+RUN go install github.com/cosmtrek/air@latest
+
+COPY go.mod go.sum ./
+
+RUN go mod download
 
 COPY . .
-EXPOSE 8088
 
-# Airをインストールし、コンテナ起動時に実行する
-RUN go install github.com/cosmtrek/air@latest
-CMD ["air"]
+CMD ["air", "-c", ".air.toml"]

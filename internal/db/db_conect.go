@@ -34,7 +34,7 @@ func dbenv() DB{
 	return dbenv
 }
 
-func NewConnect() (*gorm.DB, error){
+func NewConect() (*gorm.DB, error){
 	env := dbenv()
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Tokyo",
 			env.PostgresHost,

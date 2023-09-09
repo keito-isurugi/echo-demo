@@ -1,11 +1,16 @@
 version: '3'
 services:
   app:
-    build: .
+    container_name: echo-demo-api
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
-      - ./:/go/src/app
+      - .:/app
     ports:
-      - "8088:8088"
+      - ${SERVER_PORT}:${SERVER_PORT}
+    env_file:
+      - .env
     networks:
       - echo-demo-network
   db:
