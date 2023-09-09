@@ -14,11 +14,11 @@ type TodoHnadler struct {
 	todoRepo *infrastructure.TodoRepository
 }
 
-func NewTodoHandler(todoRepo *infrastructure.TodoRepository) *TodoHnadler{
+func NewTodoHandler(todoRepo *infrastructure.TodoRepository) *TodoHnadler {
 	return &TodoHnadler{todoRepo: todoRepo}
 }
 
-func(h *TodoHnadler) ListTodos(c echo.Context) error {
+func (h *TodoHnadler) ListTodos(c echo.Context) error {
 	ctx := context.Background()
 
 	todos, err := h.todoRepo.ListTodos(ctx)
@@ -31,7 +31,7 @@ func(h *TodoHnadler) ListTodos(c echo.Context) error {
 
 func (h *TodoHnadler) RegisterTodo(c echo.Context) error {
 	var todo domain.Todo
-	if err := c.Bind(&todo); err != nil{
+	if err := c.Bind(&todo); err != nil {
 		return c.JSON(http.StatusBadRequest, err.Error())
 	}
 

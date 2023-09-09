@@ -22,7 +22,7 @@ func NewTodo(title, content string) (*Todo, error) {
 	}
 
 	return &Todo{
-		Title: title,
+		Title:   title,
 		Content: content,
 	}, nil
 }

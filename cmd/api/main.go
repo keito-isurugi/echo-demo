@@ -21,7 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error connecting to the database: %v", err)
 	}
-	
+
 	router := server.SetupRouter(dbConect)
 
 	router.Logger.Fatal(router.Start(":" + os.Getenv("SERVER_PORT")))
