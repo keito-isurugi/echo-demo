@@ -17,7 +17,7 @@ func SetupRouter(db *gorm.DB) *echo.Echo {
 	e.Use(middleware.Recover())
 
 	architectureGroup := e.Group("/architecture")
-	architectureGroup.GET("/mono/todos", mono.GetTodos)
+	architectureGroup.GET("/mono/todos", mono.ListTodos)
 	architectureGroup.POST("/mono/todos", mono.RegisterTodo)
 
 	todoRepo := infrastructure.NewTodoRepository(db)

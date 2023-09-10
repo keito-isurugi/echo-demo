@@ -62,7 +62,7 @@ type Todo struct {
 	UpdatedAt time.Time
 }
 
-func GetTodos(c echo.Context) error {
+func ListTodos(c echo.Context) error {
 	var todos []Todo
 
 	db, _ := NewConect()
